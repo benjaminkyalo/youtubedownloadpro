@@ -1,0 +1,9 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/downloadmp3": "pages/downloadmp3.html",
+  "/downloadmp4": "pages/downloadmp4.html",
+  "/ytsearch": "pages/ytsearch.html",
+  "/404": "pages/404.html"
+}

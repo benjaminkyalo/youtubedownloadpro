@@ -1,0 +1,11 @@
+{
+  "/[[...slug]]/page": "app/[[...slug]]/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/testing/route": "app/api/testing/route.js",
+  "/api/youtube/route": "app/api/youtube/route.js",
+  "/api/youtube/search/route": "app/api/youtube/search/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js"
+}

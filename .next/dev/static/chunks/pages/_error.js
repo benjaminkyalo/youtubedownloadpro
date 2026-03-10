@@ -1,0 +1,15 @@
+__turbopack_load_page_chunks__("/_error", [
+  "static/chunks/8d77c_next_dist_compiled_61b4ae3e._.js",
+  "static/chunks/8d77c_next_dist_shared_lib_8f270bac._.js",
+  "static/chunks/8d77c_next_dist_client_ed945d44._.js",
+  "static/chunks/8d77c_next_dist_0c6457cd._.js",
+  "static/chunks/8d77c_next_error_06a23837.js",
+  "static/chunks/[next]_entry_page-loader_ts_715a061e._.js",
+  "static/chunks/8d77c_react_c089461b._.js",
+  "static/chunks/8d77c_react-dom_cjs_react-dom_development_249a9b7e.js",
+  "static/chunks/8d77c_react-dom_224590db._.js",
+  "static/chunks/8d77c_5372d714._.js",
+  "static/chunks/[root-of-the-server]__40b61109._.js",
+  "static/chunks/Desktop_13 company_youtube download pro_src_pages__error_2da965e7._.js",
+  "static/chunks/turbopack-Desktop_13 company_youtube download pro_src_pages__error_2b8c11f6._.js"
+])

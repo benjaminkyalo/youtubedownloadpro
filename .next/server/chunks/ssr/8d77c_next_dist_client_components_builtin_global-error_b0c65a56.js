@@ -1,0 +1,3 @@
+module.exports=[97046,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(28151);a.n(d("[project]/Desktop/13 company/youtube download pro/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},14238,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(28151);a.n(d("[project]/Desktop/13 company/youtube download pro/node_modules/next/dist/client/components/builtin/global-error.js"))},71635,a=>{"use strict";a.i(97046);var b=a.i(14238);a.n(b)}];
+
+//# sourceMappingURL=8d77c_next_dist_client_components_builtin_global-error_b0c65a56.js.map
