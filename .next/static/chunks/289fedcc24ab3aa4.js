@@ -1,8 +1,0 @@
-__turbopack_load_page_chunks__("/ytsearch", [
-  "static/chunks/cfe28e7ab6c00fc2.js",
-  "static/chunks/43d3f04cc79fc707.js",
-  "static/chunks/172b77097e592cb8.js",
-  "static/chunks/c7ab3096f92bdc0c.css",
-  "static/chunks/d43ab978ac5b76ce.css",
-  "static/chunks/turbopack-61222ed5b0ec46ef.js"
-])
