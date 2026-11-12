@@ -1,0 +1,53 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { lazy, Suspense, useRef, useState } from 'react';
+import { Link as LinkIcon, Wrench, CircleCheck, Zap, ArrowRight, Star, ChartNoAxesCombined, ChevronUp, AlertCircle, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { validateToolInput } from '@/lib/tool-engine';
+const MonetizationGuide = lazy(() => import('@/components/toolkit/monetization-guide').then(m => ({ default: m.MonetizationGuide })));
+const RevenueIntelligence = lazy(() => import('@/components/toolkit/revenue-intelligence').then(m => ({ default: m.RevenueIntelligence })));
+const ToolWorkspace = lazy(() => import('@/components/toolkit/tool-workspace').then(m => ({ default: m.ToolWorkspace })));
+import { allTools, essentialTools, additionalTools, type Tool, toolSlug } from '@/lib/tools';
+import { SiteShell } from '@/components/toolkit/site-shell';
+import { Information } from '@/components/toolkit/information';
+import enterImage from '@/assets/enter-youtube.jpg';
+import selectImage from '@/assets/select-tool.jpg';
+export const Route = createFileRoute('/')({
+ head: () => ({ meta: [
+  { title: 'YouTubeDownloadPro | Free Monetization Checker & Growth Tools' },
+  { name: 'description', content: 'The ultimate free suite for YouTube Growth checks. Verify challenge monetization, audit, reach suppression and download creator assets instantly' },
+  { property: 'og:title', content: 'YouTubeDownloadPro | Free Monetization Checker & Growth Tools' },
+  { property: 'og:description', content: 'Explore YouTube monetization checks, channel insights, creator assets, and growth tools in one place.' },
+  { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
+ ] }), component: Index,
+});
+const reviews = [
+ ['SM','Sarah Mitchell','Content Creator','This toolkit has been a game-changer for my YouTube channel. The monetization checker helped me understand exactly when my channel became eligible. Highly recommended!'],
+ ['JD','James Davis','YouTuber','The analytics tools are incredibly detailed. I can now track my channel’s performance and optimize my content strategy. The data viewer is especially useful!'],
+ ['EL','Emily Lopez','Channel Manager','As a YouTube manager, I use these tools daily for multiple channels. The interface is clean, fast, and the results are always accurate. Best investment for my workflow!'],
+ ['RK','Robert Kim','Digital Marketer','The money calculator helped me set realistic expectations for my channel revenue. Very useful tool for planning and understanding the monetization process.'],
+ ['AM','Alex Morgan','Video Editor','I love how easy it is to download thumbnails and extract tags. The image tool saves me so much time when creating content. Everything is in one place!'],
+ ['LT','Lisa Thompson','SEO Specialist','The shadowban detector is a lifesaver! I can quickly check if any channels I’m working with have issues. The comprehensive data provided is exactly what I need.'],
+];
+function ToolCard({ tool, onSelect }: { tool: Tool; onSelect: (name: string) => void }) {
+ return <article className="tool-card"><span className="tool-icon"><tool.icon /></span><h3>{tool.name}</h3><p>{tool.description}</p><div className="flex flex-wrap items-center gap-3"><Button variant="link" onClick={() => onSelect(tool.name)} className="learn-link" aria-label={`Use ${tool.name} here`}>Use now</Button><Link to="/tools/$slug" params={{ slug: toolSlug(tool.name) }} className="learn-link inline-flex items-center gap-1 font-semibold" aria-label={`Learn more about ${tool.name}`}>Learn more <ArrowRight className="size-4" /></Link></div></article>;
+}
+function ResultsPreview() {
+ return <div className="results-preview" aria-label="Illustrative channel analytics preview"><div className="preview-channel"><span className="preview-avatar">T</span><div><strong>Creator Channel</strong><p>Channel overview & performance</p><span className="preview-label">Channel ID · UC…</span></div></div><div className="preview-stats">{[['Subscribers','308.0M'],['Total Views','19.8B'],['Total Videos','24.9K'],['Joined','2011']].map(([k,v]) => <div key={k}><small>{k}</small><strong>{v}</strong></div>)}</div><strong className="preview-table-title">Estimated Revenue Matrix</strong><div className="preview-table"><div><span>Metric</span><span>Daily</span><span>Monthly</span><span>Yearly</span></div>{['Estimated Earnings','Estimated Views','Average Daily Views'].map(k => <div key={k}><span>{k}</span><span>—</span><span>—</span><span>—</span></div>)}</div><p className="preview-note">Illustrative preview · Not live channel data</p></div>;
+}
+function Index() {
+ const [tool, setTool] = useState('Monetization Checker');
+ const [url, setUrl] = useState('');
+ const [error, setError] = useState('');
+ const [submitted, setSubmitted] = useState<{tool:string;input:string;version:number}|null>(null);
+ const input = useRef<HTMLInputElement>(null);
+ function choose(name: string) { setTool(name); setError(''); document.getElementById('tool-action')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' }); input.current?.focus({ preventScroll: true }); }
+ function submit(e: React.FormEvent) {
+  e.preventDefault();
+  try {
+   const text = validateToolInput(tool, url);
+   setError(''); setSubmitted({tool,input:text,version:Date.now()});
+  } catch(e) { setError(e instanceof Error && e.name !== 'ZodError' ? e.message : 'Keep your input under 2,000 characters.'); input.current?.focus(); }
+ }
+ return <SiteShell onTool={choose}><main><section className="hero-section"><div className="hero-inner"><h1>YouTubeDownloadPro | Free Monetization Checker<br className="hidden lg:block" /> & <span className="text-primary">Growth</span> Tools</h1><p className="hero-subtitle">The ultimate free suite for YouTube Growth checks. Verify challenge<br className="hidden md:block" /> monetization, audit, reach suppression and download creator assets instantly</p><form id="tool-action" onSubmit={submit} className="tool-action"><input maxLength={2000} ref={input} aria-label="Channel or Video URL, ID, or username" placeholder="Channel or Video URL, ID, or @username.." value={url} onChange={e => { setUrl(e.target.value); setError(''); }} /><Select value={tool} onValueChange={setTool}><SelectTrigger aria-label="Select tool"><SelectValue /></SelectTrigger><SelectContent className="max-h-80">{allTools.map(t => <SelectItem key={t.name} value={t.name}>{t.name}</SelectItem>)}</SelectContent></Select><Button type="submit" className="submit-button">Submit</Button></form>{error && <p role="alert" className="input-error"><AlertCircle />{error}</p>}<div className="micro-indicators"><span><LinkIcon />Enter your url</span><span><Wrench />Select Tool</span><span><CircleCheck />Submit & view result</span></div></div></section>{submitted&&<div className="results-section"><Suspense fallback={<p role="status" className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="animate-spin" />Loading tool…</p>}><ToolWorkspace key={submitted.version} tool={submitted.tool} input={submitted.input}/></Suspense></div>}{(submitted?.tool??tool)==='Monetization Checker'&&<Suspense fallback={null}><RevenueIntelligence/><MonetizationGuide onShadowban={()=>choose('Shadowban Detector')}/></Suspense>}<section className="tools-section"><div className="wide-container"><div className="section-heading"><h2>Essential tools for Success</h2><p>Unlock deeper insights and optimize your content with powerful tools for monetization checks and detailed analytics.</p></div><div className="tool-grid">{essentialTools.map(t => <ToolCard key={t.name} tool={t} onSelect={choose} />)}</div><div className="more-tools"><span className="more-badge"><Zap />MORE TOOLS</span><p>Additional YouTube tools — search, analyze, and discover faster.</p></div><div className="tool-grid additional-grid">{additionalTools.map(t => <ToolCard key={t.name} tool={t} onSelect={choose} />)}</div></div></section><section className="how-section"><div className="section-heading"><h2>How It Works</h2><p>Unlock deeper insights and optimize your content with powerful tools<br className="hidden md:block" /> for monetization checks and detailed analytics.</p></div><div className="steps-container"><div className="step-row"><div className="step-visual"><img src={enterImage} alt="Red YouTube play button over sculpted waves" loading="lazy" width={1088} height={608} /><span className="step-icon"><LinkIcon /></span></div><div className="step-copy"><h3>Enter YouTube URL</h3><p>Paste your YouTube channel URL, video link, or username in the input field. Ensure your details are safe and secure.</p></div></div><div className="step-row reverse"><div className="step-visual"><img src={selectImage} alt="Video and audio creator tools on a desktop workstation" loading="lazy" width={1088} height={608} /><span className="step-icon"><Wrench /></span></div><div className="step-copy"><h3>Select a Tool</h3><p>Choose from our powerful tools like Monetization Checker, Channel ID Finder, and more. Faster & easier with everything in one place.</p></div></div><div className="step-row"><div className="step-visual"><ResultsPreview /><span className="step-icon"><ChartNoAxesCombined /></span></div><div className="step-copy"><h3>Get Instant Results</h3><p>View comprehensive analytics, insights, and download your data instantly. Track your channel performance with a quality interface.</p></div></div></div></section><section className="testimonials-section"><div className="section-heading"><h2>What Our Customers Say</h2><p>Join thousands of creators who trust our tools for their YouTube journey</p></div><div className="testimonials-grid">{reviews.map(([initials,name,title,quote]) => <article className="testimonial" key={name}><div className="stars" aria-label="5 out of 5 stars">{Array.from({length:5},(_,i) => <Star key={i} />)}</div><p>“{quote}”</p><div className="review-author"><span className="initial-avatar">{initials}</span><div><strong>{name}</strong><small>{title}</small></div></div></article>)}</div></section><Information onStart={() => choose('Monetization Checker')} /></main><Button className="back-to-top" variant="secondary" size="icon" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}><ChevronUp /></Button></SiteShell>;
+}
